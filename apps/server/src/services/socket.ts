@@ -1,17 +1,19 @@
 import { Server } from "socket.io";
 import { Redis } from "ioredis";
 
+// const PORT = process.env.REACT_APP_REDIS_PORT
+
 const pub = new Redis({
-  host: "redis-2a59ef7e-jaysh-chat-app.a.aivencloud.com",
+  host: process.env.REACT_APP_REDIS_HOST,
   port: 19311,
-  username: "default",
-  password: "AVNS_-1mD7kkWCitc5BsXatn",
+  username: process.env.REACT_APP_REDIS_USERNAME,
+  password: process.env.REACT_APP_REDIS_PSWD
 });
 const sub = new Redis({
-  host: "redis-2a59ef7e-jaysh-chat-app.a.aivencloud.com",
+  host: process.env.REACT_APP_REDIS_HOST,
   port: 19311,
-  username: "default",
-  password: "AVNS_-1mD7kkWCitc5BsXatn",
+  username: process.env.REACT_APP_REDIS_USERNAME,
+  password: process.env.REACT_APP_REDIS_PSWD
 });
 
 class SocketServices {
@@ -25,7 +27,7 @@ class SocketServices {
         origin: "*",
       },
     });
-    
+
     sub.subscribe("MESSAGE");
   }
 
@@ -41,12 +43,12 @@ class SocketServices {
       });
     });
     sub.on("message", async (channel, message) => {
-        if(channel === "MESSAGE"){
-            console.log('Message from Redis:', message);
-            
-            io.emit('message', message)
-        }
-    })
+      if (channel === "MESSAGE") {
+        console.log("Message from Redis:", message);
+
+        io.emit("message", message);
+      }
+    });
   }
   get io() {
     return this._io;
