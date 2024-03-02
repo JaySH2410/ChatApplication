@@ -8,10 +8,18 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+# RUN npm install
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Install dependencies using pnpm
+RUN pnpm install
 
 # Copy the rest of the application code
 COPY . .
+
+# Build the Turbo Repo application
+RUN cd chat-app && pnpm build
 
 # Expose the port your app runs on
 EXPOSE 3000
